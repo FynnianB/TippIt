@@ -1,17 +1,16 @@
 # Server
 
-[ ] Guesses
+- [ ] Guesses
 
-- [ ] Guess
-- [ ] Change
-- [ ] List
-- [ ] Points
+  - [ ] Guess
+  - [ ] Change
+  - [ ] List
+  - [ ] Points
 
-[ ] Games +(Ergebnisse / "Noch nicht entschieden")
+- [ ] Games +(Ergebnisse / "Noch nicht entschieden")
 
-- [ ] List
+  - [ ] List
 
-[x] Auth
-
-- [x] Signin
-- [x] Signup
+- [x] Auth
+  - [x] Signin
+  - [x] Signup
