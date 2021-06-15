@@ -1,0 +1,34 @@
+{
+  "name": "backend-tippapp",
+  "version": "1.0.0",
+  "description": "Backend for a simple TippApp",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "Tipp",
+    "Backend",
+    "Node",
+    "JS",
+    "App",
+    "Guess"
+  ],
+  "author": "Spindus",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "monk": "^7.3.4",
+    "volleyball": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
