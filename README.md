@@ -1,16 +1,17 @@
 # Server
 
-- [ ] Guesses
+- [x] Guesses
 
-  - [ ] Guess
-  - [ ] List
+  - [x] Guess
+  - [x] List
+  - [x] MyGuesses
 
-- [ ] Games +(Ergebnisse / "Noch nicht entschieden")
+- [x] Games +(Ergebnisse / "Noch nicht entschieden")
 
-  - [ ] List
-  - [ ] Commit
+  - [x] List
+  - [x] Commit (only admin)
 
-- [x] Auth
+- [x] Auth (tested)
   - [x] Signin
   - [x] Signup
 
@@ -23,6 +24,7 @@
 
 - Guesses
 
+  - UserId
   - GameId
   - Home
   - Away
@@ -30,13 +32,10 @@
 
 - Games
 
-  - Home
-  - Away
-  - Result
+  - HomeTeam
+  - AwayTeam
+  - HomeResult
+  - AwayResult
   - Date
-  - Time
   - Group
   - Stage
-
-- Teams
-  - Name

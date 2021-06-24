@@ -10,6 +10,8 @@ const app = express();
 const middlewares = require('./auth/auth.middlewares');
 
 const auth = require('./auth/auth.routes');
+const guesses = require('./api/guesses/guesses.routes');
+const games = require('./api/games/games.routes');
 
 app.use(volleyball);
 const client = process.env.CLIENT_URL
@@ -26,6 +28,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', auth);
+app.use('/api/v1/guesses', middlewares.isLoggedIn, guesses);
+app.use('/api/v1/games', middlewares.isLoggedIn, games);
 
 function notFound(req, res, next) {
   res.status(404);

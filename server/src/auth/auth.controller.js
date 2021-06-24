@@ -7,14 +7,19 @@ function createTokenSendResponse(user, res, next) {
   const payload = {
     _id: user._id,
     username: user.username,
+    role: user.role,
     active: user.active,
   };
-  jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '30d' }, (err, token) => {
+  jwt.sign(payload, process.env.TOKEN_SECRET, {
+    expiresIn: '30d'
+  }, (err, token) => {
     if (err) {
       res.status(422);
       next(new Error('Unable to login!'));
     } else {
-      res.json({ token });
+      res.json({
+        token
+      });
     }
   });
 }
@@ -25,6 +30,7 @@ const signup = async (req, res, next) => {
     const newUser = {
       username: req.body.username,
       password: hashedPassword,
+      role: 'user',
       active: true,
     };
     const insertedUser = await users.insert(newUser);
