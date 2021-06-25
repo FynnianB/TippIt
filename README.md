@@ -1,3 +1,11 @@
+# Front-End
+
+- [ ] Dashboard (with cards about important infos e.g. top5, daily-tipps...)
+- [ ] Tippabgabe
+- [ ] Tippübersicht
+- [ ] Punkteübersicht
+- [ ] Spielplan
+
 # Server
 
 - [x] Guesses

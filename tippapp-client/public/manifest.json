@@ -1,0 +1,10 @@
+{
+  "name": "TippApp",
+  "lang": "de",
+  "description": "Tippe auf die verschiedenen Spiele mit deinen Freunden",
+  "start_url": "index.html",
+  "background_color": "#fff",
+  "theme_color": "#212ff3",
+  "display": "standalone",
+  "orientation": "portrait"
+}

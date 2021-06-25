@@ -1,32 +1,163 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar app color="primary" dark v-if="pageTitle != 'Login'">
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            {{ username }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-list nav dense>
+        <v-list-item-group
+          v-model="page"
+          active-class="primary--text text--accent-4"
+          @change="drawer = false"
+          mandatory
+        >
+          <v-list-item
+            value="dashboard"
+            link
+            @click="$router.push({ name: 'Dashboard' })"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Dashboard</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            value="guess"
+            link
+            @click="$router.push({ name: 'Guess' })"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Tippen</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            value="listGuess"
+            link
+            @click="$router.push({ name: 'ListGuess' })"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-dots-grid</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Tippübersicht</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            value="listPoints"
+            link
+            @click="$router.push({ name: 'ListPoints' })"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-numbered</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Punkteübersicht</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            value="games"
+            link
+            @click="$router.push({ name: 'Games' })"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-soccer-field</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Spielplan</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block outlined @click.stop="logout"> Logout </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import jwt from "jsonwebtoken";
 
-#nav {
-  padding: 30px;
+export default {
+  name: "App",
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  data: () => ({
+    username: "",
+    drawer: false,
+    page: null,
+  }),
+  mounted() {
+    this.getUsername();
+  },
+  computed: {
+    pageTitle() {
+      let title = "";
+      switch (this.$route.name) {
+        case "Login":
+          title = "Login";
+          break;
+        case "Dashboard":
+          title = "Dashboard";
+          break;
+        case "Guess":
+          title = "Tippen";
+          break;
+        case "ListGuess":
+          title = "Tippübersicht";
+          break;
+        case "ListPoints":
+          title = "Punkteübersicht";
+          break;
+        case "Games":
+          title = "Spielplan";
+          break;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+        default:
+          title = "TippApp";
+          break;
+      }
+      return title;
+    },
+  },
+  methods: {
+    getUsername() {
+      if (localStorage.user_token)
+        if (jwt.decode(localStorage.user_token))
+          this.username = jwt.decode(localStorage.user_token).username;
+    },
+    logout() {
+      localStorage.removeItem("user_token");
+      this.$router.push({ name: "Login" });
+    },
+  },
+};
+</script>
+
+<style scoped>
 </style>
