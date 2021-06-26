@@ -9,7 +9,7 @@
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">
+          <v-list-item-title class="title text-center">
             {{ username }}
           </v-list-item-title>
         </v-list-item-content>
@@ -22,11 +22,7 @@
           @change="drawer = false"
           mandatory
         >
-          <v-list-item
-            value="dashboard"
-            link
-            @click="$router.push({ name: 'Dashboard' })"
-          >
+          <v-list-item value="Dashboard" link @click="redirect('Dashboard')">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
@@ -35,11 +31,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            value="guess"
-            link
-            @click="$router.push({ name: 'Guess' })"
-          >
+          <v-list-item value="Guess" link @click="redirect('Guess')">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -48,11 +40,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            value="listGuess"
-            link
-            @click="$router.push({ name: 'ListGuess' })"
-          >
+          <v-list-item value="ListGuess" link @click="redirect('ListGuess')">
             <v-list-item-icon>
               <v-icon>mdi-dots-grid</v-icon>
             </v-list-item-icon>
@@ -61,11 +49,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            value="listPoints"
-            link
-            @click="$router.push({ name: 'ListPoints' })"
-          >
+          <v-list-item value="ListPoints" link @click="redirect('ListPoints')">
             <v-list-item-icon>
               <v-icon>mdi-format-list-numbered</v-icon>
             </v-list-item-icon>
@@ -74,11 +58,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item
-            value="games"
-            link
-            @click="$router.push({ name: 'Games' })"
-          >
+          <v-list-item value="Games" link @click="redirect('Games')">
             <v-list-item-icon>
               <v-icon>mdi-soccer-field</v-icon>
             </v-list-item-icon>
@@ -110,10 +90,11 @@ export default {
   data: () => ({
     username: "",
     drawer: false,
-    page: null,
+    page: "Dashboard",
   }),
   mounted() {
     this.getUsername();
+    this.page = this.$route.name;
   },
   computed: {
     pageTitle() {
@@ -145,6 +126,11 @@ export default {
       return title;
     },
   },
+  watch: {
+    $route(to, from) {
+      this.page = to.name;
+    },
+  },
   methods: {
     getUsername() {
       if (localStorage.user_token)
@@ -154,6 +140,9 @@ export default {
     logout() {
       localStorage.removeItem("user_token");
       this.$router.push({ name: "Login" });
+    },
+    redirect(location) {
+      if (location != this.page) this.$router.push({ name: location });
     },
   },
 };

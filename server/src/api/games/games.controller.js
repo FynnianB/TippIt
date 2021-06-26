@@ -80,31 +80,6 @@ const insertGame = async (req, res, next) => {
   }
 }
 
-const listmyguesses = async (req, res, next) => {
-  try {
-    const foundGuesses = await guesses.find({
-      userId: req.user._id
-    });
-    if (foundGuesses && foundGuesses.length > 0) {
-      await new Promise((resolve, reject) => {
-        foundGuesses.forEach(async (guess, i, array) => {
-          const gameInfo = await games.findOne({
-            _id: guess.gameId
-          });
-          if (gameInfo) {
-            guess.gameInfo = gameInfo
-          }
-          if (array.length - 1 === i) resolve();
-        });
-      });
-    }
-    res.json(foundGuesses);
-  } catch (error) {
-    res.status(500);
-    next(error);
-  }
-}
-
 const list = async (req, res, next) => {
   try {
     const foundGames = await games.find({});

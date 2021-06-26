@@ -1,6 +1,7 @@
 const {
   guesses,
-  games
+  games,
+  users
 } = require('./guesses.model');
 
 const guess = async (req, res, next) => {
@@ -17,6 +18,7 @@ const guess = async (req, res, next) => {
     if (!updatedGuess) {
       const newGuess = {
         userId: req.user._id,
+        username: req.user.username,
         gameId: req.body.gameId,
         home: req.body.home,
         away: req.body.away,
@@ -56,16 +58,46 @@ const listmyguesses = async (req, res, next) => {
     res.status(500);
     next(error);
   }
-}
+};
 
 const list = async (req, res, next) => {
   try {
-    const foundGuesses = await guesses.find({}, {
-      sort: {
-        points: 1
-      }
+    const dataArray = [];
+    const foundUsers = await users.find({
+      active: true
     });
-    res.json(foundGuesses);
+    if (foundUsers && foundUsers.length > 0) {
+      await new Promise((resolve, reject) => {
+        foundUsers.forEach(async (user, i, array) => {
+          const userItem = {
+            userId: user._id,
+            username: user.username
+          };
+          let points = 0;
+          const foundGuesses = await guesses.find({
+            userId: user._id.toString(),
+          });
+          if (foundGuesses && foundGuesses.length > 0) {
+            await new Promise((resolve, reject) => {
+              foundGuesses.forEach(async (guess, j, inner_array) => {
+                let value = guess.home + ':' + guess.away;
+                if (guess.points) {
+                  value = value + ' (' + guess.points + ')';
+                  points += guess.points;
+                }
+                userItem[guess.gameId] = value;
+                if (inner_array.length - 1 === j) resolve();
+              });
+            });
+          }
+
+          userItem['points'] = points;
+          dataArray.push(userItem);
+          if (array.length - 1 === i) resolve();
+        });
+      });
+    }
+    res.json(dataArray);
   } catch (error) {
     res.status(500);
     next(error);
