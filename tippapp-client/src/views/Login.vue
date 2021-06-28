@@ -2,7 +2,7 @@
   <v-main class="fill-height">
     <v-container class="fill-height d-flex justify-center">
       <div class="align-center">
-        <h1 class="text-center mb-5">TippApp</h1>
+        <h1 class="text-center mb-5">TippIt</h1>
         <v-card
           ref="form"
           elevation="3"

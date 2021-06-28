@@ -9,6 +9,8 @@ router.get('/list',
   controller.list);
 router.get('/myguesses',
   controller.listmyguesses);
+router.get('/listpoints',
+  controller.listpoints);
 router.post('/guess',
   middlewares.validateGuess,
   middlewares.gameExistsAndAllowed,

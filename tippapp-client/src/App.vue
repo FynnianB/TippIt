@@ -148,5 +148,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.cursor-pointer {
+  cursor: pointer;
+}
+.centered-input input {
+  text-align: center;
+}
 </style>

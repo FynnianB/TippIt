@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height table-container">
+  <v-container class="fill-height table-container" max-width="1200px">
     <div class="table-wrapper">
       <v-data-table
         :headers="headers"
@@ -73,7 +73,7 @@ export default {
           }
         });
       // Fetch Guesses
-      fetch(process.env.VUE_APP_API_URL + "api/v1/guesses/list", {
+      fetch(process.env.VUE_APP_API_URL + "api/v1/guesses/listpoints", {
         method: "GET",
         headers: {
           authorization: `Bearer ${localStorage.user_token}`,
@@ -90,7 +90,6 @@ export default {
               guesses[i].place = i + 1;
             }
             this.items = guesses;
-            console.log(this.items);
           } else {
             this.items = [];
           }
