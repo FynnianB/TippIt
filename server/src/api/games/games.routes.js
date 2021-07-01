@@ -10,7 +10,7 @@ router.get('/list',
 router.post('/insert',
   middlewares.isAdmin,
   controller.insertGame);
-router.post('/comit',
+router.post('/commit',
   middlewares.isAdmin,
   middlewares.validateGame,
   middlewares.gameExists,

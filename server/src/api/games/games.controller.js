@@ -31,7 +31,7 @@ const commitGame = async (req, res, next) => {
               if (rD === gD) {
                 userPoints += 1;
               }
-              if (req.body.home === guess.home && req.body.away === guess.away) {
+              if (req.body.home - guess.home === 0 && req.body.away - guess.away === 0) {
                 userPoints += 1;
               }
 

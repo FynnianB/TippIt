@@ -80,10 +80,9 @@ const list = async (req, res, next) => {
           for (let j = 0; j < foundGuesses.length; j++) {
             const guess = foundGuesses[j];
             let value = guess.home + ':' + guess.away;
-            if (guess.points) {
-              value = value + ' (' + guess.points + ')';
-              points += guess.points;
-            }
+            if (!guess.points) guess.points = 0;
+            value = value + ' (' + guess.points + ')';
+            points += guess.points;
             userItem[guess.gameId] = value;
           }
         }
