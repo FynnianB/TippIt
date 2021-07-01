@@ -299,6 +299,8 @@ export default {
           .catch((err) => {
             this.loading = false;
             this.alertBox.context = err.message;
+            if (err.message === "Failed to fetch")
+              this.alertBox.context = "Server nicht erreichbar. Bitte melden";
             this.alertBox.enabled = true;
           });
       }
