@@ -8,9 +8,5 @@ module.exports = {
     name: 'TippIt',
     themeColor: '#FF5722'
   },
-  configureWebpack: {
-    output: {
-      crossOriginLoading: 'anonymous'
-    }
-  }
+  
 }
