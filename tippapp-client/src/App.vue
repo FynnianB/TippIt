@@ -1,12 +1,16 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark v-if="pageTitle != 'Login'">
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        @click="drawer = true"
+        aria-label="Menu"
+        class="nav-bar-icon-menu"
+      ></v-app-bar-nav-icon>
 
       <v-toolbar-title>{{ pageTitle }}</v-toolbar-title>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" app temporary fixed>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title text-center">
@@ -120,7 +124,7 @@ export default {
           break;
 
         default:
-          title = "TippApp";
+          title = "TippIt";
           break;
       }
       return title;

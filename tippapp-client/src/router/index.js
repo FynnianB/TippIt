@@ -1,11 +1,5 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import VueRouter from 'vue-router'
-import Login from '@/views/Login.vue'
-import Dashboard from '@/views/Dashboard.vue'
-import Games from '@/views/Games.vue'
-import Guess from '@/views/Guess.vue'
-import ListGuess from '@/views/ListGuess.vue'
-import ListPoints from '@/views/ListPoints.vue'
 
 Vue.use(VueRouter)
 
@@ -32,37 +26,37 @@ function isLoggedIn(to, from, next) {
 const routes = [{
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import('@/views/Login.vue'),
     beforeEnter: loggedInRedirectToDashboard,
   },
   {
     path: '/',
     name: 'Dashboard',
-    component: Dashboard,
+    component: () => import('@/views/Dashboard.vue'),
     beforeEnter: isLoggedIn,
   },
   {
     path: '/games',
     name: 'Games',
-    component: Games,
+    component: () => import('@/views/Games.vue'),
     beforeEnter: isLoggedIn,
   },
   {
     path: '/guess',
     name: 'Guess',
-    component: Guess,
+    component: () => import('@/views/Guess.vue'),
     beforeEnter: isLoggedIn,
   },
   {
     path: '/listguess',
     name: 'ListGuess',
-    component: ListGuess,
+    component: () => import('@/views/ListGuess.vue'),
     beforeEnter: isLoggedIn,
   },
   {
     path: '/listpoints',
     name: 'ListPoints',
-    component: ListPoints,
+    component: () => import('@/views/ListPoints.vue'),
     beforeEnter: isLoggedIn,
   },
 ]

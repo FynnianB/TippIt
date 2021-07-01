@@ -1,7 +1,17 @@
 module.exports = {
+  // publicPath: process.env.NODE_ENV === 'production' ?
+  //   '/TippIt/' : '/'
   transpileDependencies: [
     'vuetify'
   ],
-  publicPath: process.env.NODE_ENV === 'production' ?
-    '/TippIt/' : '/'
+
+  pwa: {
+    name: 'TippIt',
+    themeColor: '#FF5722'
+  },
+  configureWebpack: {
+    output: {
+      crossOriginLoading: 'anonymous'
+    }
+  }
 }

@@ -16,7 +16,7 @@ const games = require('./api/games/games.routes');
 app.use(volleyball);
 const client = process.env.CLIENT_URL
 app.use(cors({
-  origin: [client],
+  origin: [client, 'https://test.fynnian-brosius.de'],
 }));
 app.use(express.json());
 app.use(helmet());
