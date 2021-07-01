@@ -8,5 +8,5 @@ module.exports = {
     name: 'TippIt',
     themeColor: '#FF5722'
   },
-  
+
 }
