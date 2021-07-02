@@ -18,6 +18,12 @@
             {{ item.place }}
           </v-chip>
         </template>
+        <template v-slot:item.username="{ item }">
+          {{ item.username
+          }}<v-icon color="#fcc200" dense right v-if="item.place === 1"
+            >mdi-trophy</v-icon
+          >
+        </template>
         <!-- eslint-enable -->
       </v-data-table>
     </div>

@@ -79,12 +79,17 @@ const list = async (req, res, next) => {
         if (foundGuesses && foundGuesses.length > 0) {
           for (let j = 0; j < foundGuesses.length; j++) {
             const guess = foundGuesses[j];
-            let value = guess.home + ':' + guess.away;
-            if (guess.points !== null || guess.points === 0) {
-              value = value + ' (' + guess.points + ')';
-              points += guess.points;
+            const game = await games.findOne({
+              _id: guess.gameId.toString()
+            });
+            if (game && Date.now() > new Date(game.date).getTime()) {
+              let value = guess.home + ':' + guess.away;
+              if (guess.points !== null || guess.points === 0) {
+                value = value + ' (' + guess.points + ')';
+                points += guess.points;
+              }
+              userItem[guess.gameId] = value;
             }
-            userItem[guess.gameId] = value;
           }
         }
         userItem['points'] = points;
