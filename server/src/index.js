@@ -7,11 +7,11 @@ require('dotenv').config();
 
 const app = express();
 
-const middlewares = require('./auth/auth.middlewares');
+const middlewares = require('./src/auth/auth.middlewares');
 
-const auth = require('./auth/auth.routes');
-const guesses = require('./api/guesses/guesses.routes');
-const games = require('./api/games/games.routes');
+const auth = require('./src/auth/auth.routes');
+const guesses = require('./src/api/guesses/guesses.routes');
+const games = require('./src/api/games/games.routes');
 
 app.use(volleyball);
 const client = process.env.CLIENT_URL
