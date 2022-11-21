@@ -2,10 +2,10 @@
   "name": "backend-tippapp",
   "version": "1.0.0",
   "description": "Backend for a simple TippApp",
-  "main": "src/index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "Tipp",
