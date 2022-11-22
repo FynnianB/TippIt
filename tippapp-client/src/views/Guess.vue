@@ -35,6 +35,10 @@
           </div>
           <span v-else>{{ getGuessStr(item.guess) }}</span>
         </template>
+        <template v-slot:item.stage="{ item }">
+          <span v-if="item.stage == 'group'">Gruppenphase</span>
+          <span v-else>{{ item.stage }}</span>
+        </template>
         <template v-slot:footer.prepend>
           <v-btn color="secondary" elevation="8" large @click="saveGuesses()"
             >Speichern</v-btn

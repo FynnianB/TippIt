@@ -70,7 +70,8 @@ const insertGame = async (req, res, next) => {
       awayResult: req.body.awayResult,
       date: new Date(req.body.date),
       group: req.body.group,
-      stage: req.body.stage
+      stage: req.body.stage,
+      event: req.body.event
     };
     const insertedGame = await games.insert(newGame);
     res.json(insertedGame);
@@ -82,7 +83,9 @@ const insertGame = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   try {
-    const foundGames = await games.find({});
+    const foundGames = await games.find({
+      event: 'wm2022'
+    });
     res.json(foundGames);
   } catch (error) {
     res.status(500);

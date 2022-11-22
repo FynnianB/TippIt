@@ -38,7 +38,9 @@ const guess = async (req, res, next) => {
 const listmyguesses = async (req, res, next) => {
   try {
     const resArray = [];
-    const foundGames = await games.find({});
+    const foundGames = await games.find({
+      event: 'wm2022'
+    });
     if (foundGames && foundGames.length > 0) {
       for (let i = 0; i < foundGames.length; i++) {
         const game = foundGames[i];

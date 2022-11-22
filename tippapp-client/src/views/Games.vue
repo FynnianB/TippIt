@@ -29,6 +29,12 @@
             {{ item.awayTeam }}
           </v-chip>
         </template>
+        <template v-slot:item.stage="{ item }">
+          <span v-if="item.stage == 'group'"
+            >Gruppenphase (Gruppe {{ item.group.toUpperCase() }})</span
+          >
+          <span v-else>{{ item.stage }}</span>
+        </template>
         <!-- eslint-enable -->
       </v-data-table>
     </div>
