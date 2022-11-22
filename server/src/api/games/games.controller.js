@@ -82,11 +82,7 @@ const insertGame = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   try {
-    const startTime = Date.now();
     const foundGames = await games.find({});
-    const endTime = Date.now();
-    const elapsed = endTime - startTime;
-    console.log(elapsed);
     res.json(foundGames);
   } catch (error) {
     res.status(500);

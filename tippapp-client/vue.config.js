@@ -1,5 +1,5 @@
 module.exports = {
-  // publicPath: '/TippIt/',
+  publicPath: '/TippIt/',
   transpileDependencies: [
     'vuetify'
   ],
