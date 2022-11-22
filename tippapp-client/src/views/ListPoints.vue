@@ -5,9 +5,12 @@
         :headers="headers"
         :items="items"
         :items-per-page="10"
+        :loading="loading"
         class="elevation-3"
         disable-filtering
+        disable-sort
         locale="de-DE"
+        v-if="!mobile"
       >
         <!-- eslint-disable -->
         <template v-slot:item.place="{ item }">
@@ -26,6 +29,45 @@
         </template>
         <!-- eslint-enable -->
       </v-data-table>
+      <v-simple-table fixed-header v-else>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th
+                v-for="header in mobileHeaders"
+                :key="header.value"
+                class="max-width-small"
+              >
+                {{ header.text }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in items" :key="item.name">
+              <td
+                v-for="header in mobileHeaders"
+                :key="header.value"
+                class="text-left max-width-small"
+              >
+                <div v-if="header.value == 'username'">
+                  <v-chip
+                    :color="getColor(item.place)"
+                    dark
+                    v-if="item.place <= 3"
+                  >
+                    {{ item.place }}
+                  </v-chip>
+                  <v-chip color="white" v-else>
+                    {{ item.place }}
+                  </v-chip>
+                  {{ item[header.value] }}
+                </div>
+                <span v-else>{{ item[header.value] }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </div>
   </v-container>
 </template>
@@ -41,44 +83,36 @@ export default {
         value: "place",
       },
       { text: "Name", value: "username", align: "start" },
+      { text: "Gruppenphase", value: "group", align: "center" },
+      { text: "Achtelfinale", value: "round_of_16", align: "center" },
+      { text: "Viertelfinale", value: "quaterfinals", align: "center" },
+      { text: "Halbfinale", value: "halffinals", align: "center" },
+      { text: "Finale", value: "finals", align: "center" },
       { text: "Punkte", value: "points", align: "end" },
     ],
+    mobileHeaders: [
+      { text: "Name", value: "username" },
+      { text: "GP", value: "group" },
+      { text: "AF", value: "round_of_16" },
+      { text: "VF", value: "quaterfinals" },
+      { text: "HF", value: "halffinals" },
+      { text: "F", value: "finals" },
+      { text: "PTS", value: "points" },
+    ],
     items: [],
+    loading: true,
   }),
   mounted() {
     this.fetchData();
   },
+  computed: {
+    mobile() {
+      return window.innerWidth < 800;
+    },
+  },
   methods: {
     fetchData() {
-      // Fetch Games
-      fetch(process.env.VUE_APP_API_URL + "api/v1/games/list", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${localStorage.user_token}`,
-          "content-type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((games) => {
-          if (Array.isArray(games)) {
-            const array = [];
-            games.forEach((game) => {
-              if (!array.includes(game.stage)) {
-                array.push(game.stage);
-              }
-            });
-            const newHeader = array.map((i) => {
-              const item = {
-                align: "center",
-                text: i,
-                value: i,
-              };
-              return item;
-            });
-            this.headers.splice.apply(this.headers, [2, 0].concat(newHeader));
-          }
-        });
-      // Fetch Guesses
+      // Fetch Points
       fetch(process.env.VUE_APP_API_URL + "api/v1/guesses/listpoints", {
         method: "GET",
         headers: {
@@ -87,18 +121,19 @@ export default {
         },
       })
         .then((res) => res.json())
-        .then((guesses) => {
-          if (Array.isArray(guesses)) {
-            guesses.sort((a, b) =>
+        .then((points) => {
+          if (Array.isArray(points)) {
+            points.sort((a, b) =>
               a.points > b.points ? -1 : b.points > a.points ? 1 : 0
             );
-            for (let i = 0; i < guesses.length; i++) {
-              guesses[i].place = i + 1;
+            for (let i = 0; i < points.length; i++) {
+              points[i].place = i + 1;
             }
-            this.items = guesses;
+            this.items = points;
           } else {
             this.items = [];
           }
+          this.loading = false;
         });
     },
     getColor(place) {
@@ -123,13 +158,18 @@ export default {
   },
 };
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
 .table-wrapper {
   flex-basis: 100%;
 }
 .table-container {
   display: flex;
   justify-content: center;
+}
+
+.max-width-small {
+  padding-inline: 1vw !important;
+  word-wrap: break-word;
+  max-width: 25vw;
 }
 </style>

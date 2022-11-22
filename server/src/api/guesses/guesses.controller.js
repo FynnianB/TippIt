@@ -112,6 +112,9 @@ const listpoints = async (req, res, next) => {
       active: true
     });
     if (foundUsers && foundUsers.length > 0) {
+      const foundGames = await games.find({
+        event: 'wm2022'
+      });
       for (let i = 0; i < foundUsers.length; i++) {
         const user = foundUsers[i];
         const userItem = {
@@ -119,23 +122,20 @@ const listpoints = async (req, res, next) => {
           username: user.username
         };
         let points = 0;
-        const foundGuesses = await guesses.find({
-          userId: user._id.toString(),
-        });
-        if (foundGuesses && foundGuesses.length > 0) {
-          for (let j = 0; j < foundGuesses.length; j++) {
-            const guess = foundGuesses[j];
-            if (!Number.isInteger(guess.points)) {
-              guess.points = 0;
-            }
-            const game = await games.findOne({
-              _id: guess.gameId
-            })
-            points += guess.points;
-            if (Number.isInteger(userItem[game.stage])) {
-              userItem[game.stage] += guess.points;
-            } else {
-              userItem[game.stage] = guess.points;
+        if (foundGames && foundGames.length > 0) {
+          const foundGuesses = await guesses.find({
+            userId: user._id.toString()
+          });
+          for (let j = 0; j < foundGames.length; j++) {
+            const game = foundGames[j];
+            const guess = foundGuesses.find(guess => guess.gameId == game._id.toString());
+            if (guess && Number.isInteger(guess.points) && guess.points > 0) {
+              points += guess.points;
+              if (Number.isInteger(userItem[game.stage])) {
+                userItem[game.stage] += guess.points;
+              } else {
+                userItem[game.stage] = guess.points;
+              }
             }
           }
         }

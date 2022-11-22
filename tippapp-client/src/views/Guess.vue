@@ -9,6 +9,8 @@
         disable-filtering
         disable-sort
         locale="de-DE"
+        :loading="loading"
+        v-if="!mobile"
       >
         <!-- eslint-disable -->
         <template v-slot:item.guess="{ item }">
@@ -36,11 +38,67 @@
           <span v-else>{{ getGuessStr(item.guess) }}</span>
         </template>
         <template v-slot:item.stage="{ item }">
-          <span v-if="item.stage == 'group'">Gruppenphase</span>
+          <span v-if="item.stage == 'group'"
+            >Gruppenphase (Gruppe {{ item.group.toUpperCase() }})</span
+          >
           <span v-else>{{ item.stage }}</span>
         </template>
         <template v-slot:footer.prepend>
           <v-btn color="secondary" elevation="8" large @click="saveGuesses()"
+            >Speichern</v-btn
+          >
+        </template>
+        <!-- eslint-enable -->
+      </v-data-table>
+      <v-data-table
+        :headers="mobileHeaders"
+        :items="items"
+        :items-per-page="-1"
+        class="elevation-3"
+        disable-filtering
+        disable-sort
+        locale="de-DE"
+        :loading="loading"
+        mobile-breakpoint="-1"
+        v-else
+      >
+        <!-- eslint-disable -->
+        <template v-slot:item.info="{ item }">
+          <b
+            ><span v-if="item.stage == 'group'"
+              >Gruppenphase (Gruppe {{ item.group.toUpperCase() }})</span
+            >
+            <span v-else>{{ item.stage }}</span></b
+          ><br />{{ item.date }}
+        </template>
+        <template v-slot:item.teams="{ item }">
+          <b>{{ item.homeTeam }} : {{ item.awayTeam }}</b
+          ><br />
+          <div v-if="item.editable" class="d-flex flex-row align-center">
+            <v-text-field
+              v-model="item.home"
+              outlined
+              dense
+              single-line
+              :rules="[rules.numeric]"
+              hide-details
+              class="mr-1 centered-input"
+            ></v-text-field>
+            <span>:</span>
+            <v-text-field
+              v-model="item.away"
+              outlined
+              dense
+              single-line
+              :rules="[rules.numeric]"
+              hide-details
+              class="ml-1 centered-input"
+            ></v-text-field>
+          </div>
+          <span v-else>{{ getGuessStr(item.guess) }}</span>
+        </template>
+        <template v-slot:footer.prepend>
+          <v-btn color="secondary" elevation="2" large @click="saveGuesses()"
             >Speichern</v-btn
           >
         </template>
@@ -87,13 +145,22 @@ export default {
         align: "center",
       },
     ],
+    mobileHeaders: [
+      { text: "Begegnung", value: "info", align: "start" },
+      {
+        text: "Mannschaften / Tipp",
+        value: "teams",
+        align: "center",
+        width: "50%",
+      },
+    ],
     items: [],
     rules: {
       numeric: (value) => {
         if (!value || (Number.isInteger(parseInt(value, 10)) && value >= 0)) {
           return true;
         } else {
-          return "Nur Zahlen erlaubt";
+          return "Nur positive Zahlen erlaubt";
         }
       },
     },
@@ -102,9 +169,15 @@ export default {
       enabled: false,
       context: "",
     },
+    loading: true,
   }),
   mounted() {
     this.fetchData();
+  },
+  computed: {
+    mobile() {
+      return window.innerWidth < 800;
+    },
   },
   methods: {
     fetchData() {
@@ -137,11 +210,13 @@ export default {
 
               game.editable = Date.now() < new Date(game.date).getTime();
 
-              const d = new Date(item.date).toLocaleString();
+              let d = new Date(item.date).toLocaleString();
+              d = d.substr(0, d.length - 3); // Remove seconds
               game.date = d;
               return game;
             });
             this.items = gameItems;
+            this.loading = false;
           }
         });
     },
