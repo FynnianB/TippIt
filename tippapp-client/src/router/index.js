@@ -59,6 +59,12 @@ const routes = [{
     component: () => import('@/views/ListPoints.vue'),
     beforeEnter: isLoggedIn,
   },
+  {
+    path: '/game',
+    name: 'Game',
+    component: () => import('@/views/Game.vue'),
+    beforeEnter: isLoggedIn,
+  },
 ]
 
 const router = new VueRouter({

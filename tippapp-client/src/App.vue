@@ -122,6 +122,9 @@ export default {
         case "Games":
           title = "Spielplan";
           break;
+        case "Game":
+          title = "Spielinformationen";
+          break;
 
         default:
           title = "TippIt";

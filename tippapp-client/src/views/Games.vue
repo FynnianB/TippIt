@@ -10,6 +10,7 @@
         disable-sort
         locale="de-DE"
         :loading="loading"
+        @click:row="goToGame"
         v-if="!mobile"
       >
         <!-- eslint-disable -->
@@ -19,7 +20,8 @@
               item.homeResult > item.awayResult ? '#00DB73' : 'transparent'
             "
           >
-            {{ item.homeTeam }}
+            <v-img class="flag" :src="flagUrl(item.homeTeam)" />
+            {{ item.homeTeamName }}
           </v-chip>
         </template>
         <template v-slot:item.awayTeam="{ item }">
@@ -28,7 +30,8 @@
               item.awayResult > item.homeResult ? '#00DB73' : 'transparent'
             "
           >
-            {{ item.awayTeam }}
+            <v-img class="flag" :src="flagUrl(item.awayTeam)" />
+            {{ item.awayTeamName }}
           </v-chip>
         </template>
         <template v-slot:item.stage="{ item }">
@@ -66,7 +69,7 @@
               item.homeResult > item.awayResult ? '#00DB73' : 'transparent'
             "
           >
-            {{ item.homeTeam }}
+            {{ item.homeTeamName }}
           </v-chip>
           <br />
           <v-chip
@@ -74,7 +77,7 @@
               item.awayResult > item.homeResult ? '#00DB73' : 'transparent'
             "
           >
-            {{ item.awayTeam }}
+            {{ item.awayTeamName }}
           </v-chip>
         </template>
         <template v-slot:item.result="{ item }">
@@ -91,6 +94,7 @@
 </template>
 
 <script>
+const regionNames = new Intl.DisplayNames(["de"], { type: "region" });
 export default {
   name: "Games",
   data: () => ({
@@ -151,6 +155,9 @@ export default {
               if (item.awayResult === null) item.awayResult = "-";
               game.result = item.homeResult + " : " + item.awayResult;
 
+              game.homeTeamName = this.unicodeToName(game.homeTeam);
+              game.awayTeamName = this.unicodeToName(game.awayTeam);
+
               let d = new Date(item.date).toLocaleString();
               d = d.substr(0, d.length - 3); // Remove seconds
               game.date = d;
@@ -159,6 +166,23 @@ export default {
             this.loading = false;
           }
         });
+    },
+    goToGame(item) {
+      this.$router.push({ name: "Game", query: { id: item._id } });
+    },
+    flagUrl(unicode) {
+      if (unicode == "EN" || unicode == "WL") unicode = "GB";
+      return (
+        "http://purecatamphetamine.github.io/country-flag-icons/3x2/" +
+        unicode +
+        ".svg"
+      );
+    },
+    unicodeToName(unicode) {
+      let name = regionNames.of(unicode);
+      if (unicode == "EN") name = "England";
+      if (unicode == "WL") name = "Wales";
+      return name;
     },
   },
 };
@@ -171,5 +195,13 @@ export default {
 .table-container {
   display: flex;
   justify-content: center;
+}
+
+.flag {
+  height: 1em;
+  width: 1.5em;
+  border: 1px solid grey;
+  display: inline-block;
+  margin-right: 0.5em;
 }
 </style>

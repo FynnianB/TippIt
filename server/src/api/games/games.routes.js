@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/list',
   controller.list);
+router.get('/listGroupStage',
+  controller.listGroupStage);
 router.post('/insert',
   middlewares.isAdmin,
   controller.insertGame);
@@ -15,5 +17,8 @@ router.post('/commit',
   middlewares.validateGame,
   middlewares.gameExists,
   controller.commitGame);
+router.post('/gameInfo',
+  middlewares.gameExists,
+  controller.gameInfo);
 
 module.exports = router;

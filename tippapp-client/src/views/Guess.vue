@@ -48,6 +48,14 @@
             >Speichern</v-btn
           >
         </template>
+        <template v-slot:item.homeTeamName="{ item }">
+          <v-img class="flag" :src="flagUrl(item.homeTeam)" />
+          {{ item.homeTeamName }}
+        </template>
+        <template v-slot:item.awayTeamName="{ item }">
+          <v-img class="flag" :src="flagUrl(item.awayTeam)" />
+          {{ item.awayTeamName }}
+        </template>
         <!-- eslint-enable -->
       </v-data-table>
       <v-data-table
@@ -72,7 +80,7 @@
           ><br />{{ item.date }}
         </template>
         <template v-slot:item.teams="{ item }">
-          <b>{{ item.homeTeam }} : {{ item.awayTeam }}</b
+          <b>{{ item.homeTeamName }} : {{ item.awayTeamName }}</b
           ><br />
           <div v-if="item.editable" class="d-flex flex-row align-center">
             <v-text-field
@@ -125,6 +133,8 @@
 </template>
 
 <script>
+const regionNames = new Intl.DisplayNames(["de"], { type: "region" });
+
 export default {
   name: "Guess",
   data: () => ({
@@ -135,8 +145,8 @@ export default {
         align: "start",
         value: "date",
       },
-      { text: "Heim", value: "homeTeam", align: "start" },
-      { text: "Gast", value: "awayTeam", align: "start" },
+      { text: "Heim", value: "homeTeamName", align: "start" },
+      { text: "Gast", value: "awayTeamName", align: "start" },
       {
         text: "Tipp",
         value: "guess",
@@ -208,6 +218,9 @@ export default {
               game.away = game.guess.away === "-" ? "" : game.guess.away;
               game.guess = game.guess.home + ":" + game.guess.away;
 
+              game.homeTeamName = this.unicodeToName(game.homeTeam);
+              game.awayTeamName = this.unicodeToName(game.awayTeam);
+
               game.editable = Date.now() < new Date(game.date).getTime();
 
               let d = new Date(item.date).toLocaleString();
@@ -278,6 +291,20 @@ export default {
       }
       this.fetchData();
     },
+    flagUrl(unicode) {
+      if (unicode == "EN" || unicode == "WL") unicode = "GB";
+      return (
+        "http://purecatamphetamine.github.io/country-flag-icons/3x2/" +
+        unicode +
+        ".svg"
+      );
+    },
+    unicodeToName(unicode) {
+      let name = regionNames.of(unicode);
+      if (unicode == "EN") name = "England";
+      if (unicode == "WL") name = "Wales";
+      return name;
+    },
   },
 };
 </script>
@@ -292,5 +319,13 @@ export default {
 }
 .max-width-1200 {
   max-width: 1200px;
+}
+
+.flag {
+  height: 1em;
+  width: 1.5em;
+  border: 1px solid grey;
+  display: inline-block;
+  margin-right: 0.5em;
 }
 </style>

@@ -93,8 +93,68 @@ const list = async (req, res, next) => {
   }
 }
 
+const listGroupStage = async (req, res, next) => {
+  try {
+    const foundGames = await games.find({
+      event: 'wm2022',
+      stage: 'group'
+    });
+    const groups = [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ];
+    for (let i = 0; i < foundGames.length; i++) {
+      const game = foundGames[i];
+      game.date_day = new Date(game.date).toLocaleDateString('de-DE', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'numeric'
+      });
+      game.date_time = new Date(game.date).toLocaleTimeString('de-DE', {
+        hour: 'numeric',
+        minute: 'numeric'
+      })
+      groups[alphabetPosition(game.group)].push(game);
+    }
+    res.json(groups);
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
+}
+
+const gameInfo = async (req, res, next) => {
+  try {
+    let foundGuesses = [];
+    if (new Date(req.game.date).getTime() < Date.now()) {
+      foundGuesses = await guesses.find({
+        gameId: req.body.gameId
+      });
+    }
+    res.json({
+      ...req.game,
+      guesses: foundGuesses
+    });
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
+}
+
+function alphabetPosition(text) {
+  return [...text].map(a => parseInt(a, 36) - 10).filter(a => a >= 0);
+}
+
 module.exports = {
   commitGame,
   insertGame,
-  list
+  list,
+  listGroupStage,
+  gameInfo,
 }

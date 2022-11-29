@@ -140,7 +140,8 @@ const listpoints = async (req, res, next) => {
           }
         }
         userItem['points'] = points;
-        dataArray.push(userItem);
+        if (points > 0)
+          dataArray.push(userItem);
       }
     }
     res.json(dataArray);

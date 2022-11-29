@@ -19,6 +19,7 @@ const gameExists = async (req, res, next) => {
       _id: req.body.gameId
     });
     if (game) {
+      req.game = game;
       next();
     } else {
       res.status(400);
