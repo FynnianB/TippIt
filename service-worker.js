@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/TippIt/precache-manifest.f27105d2fb095f8e64c2771019f66e6c.js"
+  "/TippIt/precache-manifest.8fb4c0b1409eb9d59bf47b1411dcbcdf.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "tippit"});
