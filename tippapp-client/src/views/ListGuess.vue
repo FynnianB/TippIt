@@ -66,32 +66,7 @@ export default {
       { text: "Punkte", value: "points", align: "end" },
     ],
     items: [[], [], [], [], [], [], [], []],
-    cards: [
-      {
-        title: "Gruppe A",
-      },
-      {
-        title: "Gruppe B",
-      },
-      {
-        title: "Gruppe C",
-      },
-      {
-        title: "Gruppe D",
-      },
-      {
-        title: "Gruppe E",
-      },
-      {
-        title: "Gruppe F",
-      },
-      {
-        title: "Gruppe G",
-      },
-      {
-        title: "Gruppe H",
-      },
-    ],
+    cards: [[], [], [], [], [], [], [], []],
     baseFlagUrl: "http://purecatamphetamine.github.io/country-flag-icons/3x2/",
   }),
   mounted() {
@@ -121,6 +96,32 @@ export default {
               });
             });
             this.items = games;
+            this.cards = [
+              {
+                title: "Gruppe A",
+              },
+              {
+                title: "Gruppe B",
+              },
+              {
+                title: "Gruppe C",
+              },
+              {
+                title: "Gruppe D",
+              },
+              {
+                title: "Gruppe E",
+              },
+              {
+                title: "Gruppe F",
+              },
+              {
+                title: "Gruppe G",
+              },
+              {
+                title: "Gruppe H",
+              },
+            ];
           }
         });
     },

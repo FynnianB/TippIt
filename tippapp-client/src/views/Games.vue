@@ -69,6 +69,7 @@
               item.homeResult > item.awayResult ? '#00DB73' : 'transparent'
             "
           >
+            <v-img class="flag" :src="flagUrl(item.homeTeam)" />
             {{ item.homeTeamName }}
           </v-chip>
           <br />
@@ -77,6 +78,7 @@
               item.awayResult > item.homeResult ? '#00DB73' : 'transparent'
             "
           >
+            <v-img class="flag" :src="flagUrl(item.awayTeam)" />
             {{ item.awayTeamName }}
           </v-chip>
         </template>
